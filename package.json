@@ -18,16 +18,19 @@
     "pre-commit": "lint-staged"
   },
   "dependencies": {
+    "@pusher/push-notifications-server": "^1.2.0",
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "helmet": "^3.18.0",
     "jwks-rsa": "^1.5.0",
     "knex": "^0.16.5",
+    "moment": "^2.24.0",
     "morgan": "^1.9.1",
     "nodemailer": "^6.1.1",
     "nodemon": "^1.19.0",
     "pg": "^7.11.0",
+    "pusher": "^2.2.0",
     "sqlite3": "^4.0.8"
   }
 }

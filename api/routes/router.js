@@ -10,7 +10,11 @@ const listRoutes = require("./listRoutes");
 const notificationRoutes = require("./notificationRoutes");
 const inviteRoutes = require("./inviteRoutes");
 
-router.get("/", (req, res) => {
+const validate = require("../auth/checkJwt");
+
+router.use(validate);
+
+router.get("/", res => {
   res.send("This is the API root endpoint.");
 });
 

@@ -25,6 +25,12 @@ function getProfileByEmail(email) {
     .from("users")
     .where({ email });
 }
+function getIdByEmail(email) {
+  return db
+    .select("id")
+    .from("users")
+    .where({ email });
+}
 function add(user) {
   return db("users")
     .insert(user)
@@ -40,11 +46,3 @@ function remove(id) {
     .where({ id })
     .del();
 }
-// Define database from the configuration
-const db = require("../data/config.js");
-// Export functions
-module.exports = {
-  get,
-  getById,
-  createUser
-};

@@ -75,6 +75,82 @@ router.put("/:id", async (req, res) => {
 });
 
 // *** CREATE NEW USER ** //
+
+router.get("/check/getid", (req, res) => {
+  let { email } = req.user;
+  db.getIdByEmail(email)
+    .then(id => {
+      if (!id || id.length === 0) {
+        //create new user
+        let newUser = {
+          name: req.user.name,
+          email: req.user.email,
+          profilePicture: req.user.picture
+        };
+
+        // send welcome email
+        let transporter = nodemailer.createTransport({
+          service: process.env.EMAIL_SERVICE,
+          auth: {
+            user: process.env.EMAIL_ADDRESS,
+            pass: process.env.EMAIL_PASSWORD
+          }
+        });
+        let mailOptions = {
+          from: process.env.EMAIL_ADDRESS,
+          to: newUser.email,
+          subject: "Welcome to ShopTrak!",
+          text: `Thank you for using ShopTrak. The Lambda Labs 10 Shopping List team hopes you enjoy it.`
+        };
+        transporter.sendMail(mailOptions, function(error, info) {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log(`Email sent: ${info.response}`);
+          }
+        });
+
+        return db
+          .add(newUser)
+          .then(id => {
+            return db
+              .getById(id)
+              .then(profile => {
+                return res.status(201).json({
+                  message: `New user added with ID ${id}.`,
+                  profile: profile[0],
+                  id: id[0]
+                });
+              })
+              .catch(err => {
+                console.log(err);
+                return res
+                  .status(404)
+                  .json({ error: `Error addind user/no user found.` });
+              });
+          })
+          .catch(err => {
+            console.log(err);
+            return res
+              .status(404)
+              .json({ error: `Error adding user/no user found.` });
+          });
+      } else {
+        db.getById(id[0].id)
+          .then(profile => {
+            return res.status(200).json({ profile: profile[0], id: id[0].id });
+          })
+          .catch(err => {
+            console.log(err);
+            return res.status(404).json({ error: `Nothing here.` });
+          });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).json({ error: `Error retrieving user ID.` });
+    });
+});
 // router.post("/", async (req, res) => {
 //   //check if user already exists
 //   let { email } = req.user;

@@ -4,12 +4,6 @@ const db = require('../../data/helpers/userDb');
 
 const nodemailer = require('nodemailer')
 
-const validate = require('../auth/checkJwt');
-
-
-router.use(validate);
-
-
 // *** GET ALL ** // 
 router.get("/", (req, res) => {
   db.get()

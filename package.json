@@ -5,6 +5,18 @@
   "repository": "https://github.com/labs12-chores-pm/chore-monkey-backend.git",
   "author": "SabrinaGear <sabrinagear.ft@gmail.com>",
   "license": "MIT",
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js",
+    "start": "nodemon index.js",
+    "pre-commit": "lint-staged"
+  },
   "dependencies": {
     "dotenv": "^8.0.0",
     "express": "^4.16.4",

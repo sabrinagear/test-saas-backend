@@ -1,4 +1,4 @@
-const db = require("../data/config.js");
+const db = require("../config");
 
 module.exports = {
   getByCode,

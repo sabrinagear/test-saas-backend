@@ -1,6 +1,6 @@
 const express = require("express");
 const middleware = require("./middleware/config");
-const router = require("./routes/router");
+const router = require("./routes/router.js");
 const server = express();
 
 //middleware

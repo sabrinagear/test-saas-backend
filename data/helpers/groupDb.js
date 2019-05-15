@@ -1,5 +1,5 @@
 // Define database from the configuration
-const db = require("../data/config.js");
+const db = require("../config");
 
 // Export functions
 module.exports = {

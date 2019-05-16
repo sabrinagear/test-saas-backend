@@ -6,6 +6,10 @@ const userDb = require("../../data/helpers/userDb")
 
 
 
+
+
+
+
 // POST A USER //
 
 router.post('/', (req, res) => {
@@ -96,6 +100,10 @@ router.put('/:id', (req, res) => {
       res.status(500).json({ message: `user could not be updated`, err })
     })
 })
+
+
+
+
 
 
 

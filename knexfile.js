@@ -6,7 +6,7 @@ localPg = {
   database: process.env.database,
   user: process.env.user,
   password: process.env.password,
-  port: process.env.port,
+  port: process.env.dbPort,
   defaults: {
     ssl: true
   }

@@ -14,15 +14,15 @@ const inviteRoutes = require("./invitationRoutes");
 
 // router.use(validate);
 
-router.get("/", res => {
-  res.send("This is the API root endpoint.");
+router.get("/", (req, res) => {
+  res.status(200).json({ message: "This is the API root endpoint." });
 });
 
-router.use("/user", userRoutes);
+router.use("/users", userRoutes);
 router.use("/group", groupRoutes);
 // router.use("/subscription", subscriptionRoutes);
-router.use("/task", taskRoutes);
-router.use("/groupmember", groupMemberRoutes);
+router.use("/tasks", taskRoutes);
+router.use("/groupmembers", groupMemberRoutes);
 router.use("/list", listRoutes);
 router.use("/notification", notificationRoutes);
 router.use("/invite", inviteRoutes);

@@ -1,142 +1,41 @@
-const express = require("express");
-const router = express.Router();
-const taskDb = require("../../data/helpers/taskDb");
-const notificationDb = require("../../data/helpers/notificationDb");
-const groupDb = require("../../data/helpers/groupDb");
-const userDb = require("../../data/helpers/userDb");
+const express = require('express')
+const taskRouter = express.Router()
+const taskDb = require('../../data/helpers/taskDb')
 
-const checkJwt = require("../auth/checkJwt");
-const checkUser = require("../auth/checkUser");
+// const checkJwt = require('../../validators/checkJwt')
+// const checkUser = require('../../validators/checkUser')
+// checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
+const moment = require('moment')
 
-const moment = require("moment");
 
-var Pusher = require("pusher");
 
-var pusher = new Pusher({
-  appId: process.env.PUSHER_APP_ID,
-  key: process.env.PUSHER_KEY,
-  secret: process.env.PUSHER_SECRET,
-  cluster: process.env.PUSHER_CLUSTER,
-  encrypted: true
-});
 
-const PushNotifications = require("@pusher/push-notifications-server");
+// taskRouter.use(checkJwt)
 
-let beamsClient = new PushNotifications({
-  instanceId: process.env.BEAMS_INSTANCE_ID,
-  secretKey: process.env.BEAMS_SECRET_KEY
-});
+// ADD Task //
 
-// /** ADD task TO DATABASE
-//  * @param task = {name: "name of task", groupId: id of group it belongs to, "price": price of the task, "quantity": how much of the amount}, this is gathered from the @param req.body
-//  * @return id = task ID primary key in tasks table (e.g. 1, 3, 22, etc.);
-//  * ID is generated upon task creation
-//  * @param task.name is the name of the task. Not nullable.
-//  * @param task.groupId is the id of the group. Not nullable.
-//  * @param task.purchasedBy is the user who purchased the task. Nullable.
-//  * @param task.purchased is to show is this task purchased or not.
-//  * @param task.price is the price of the task. Not nullable.
-//  * @param task.quantity is the quantity of the task. Not nullable.
-//  * @param task.measurement is the measurement/unit of the task. (e.g. lbs, bushels). Nullable.
-//  * @param task.purchasedOn is the date that the task was purchased on. Nullable.
-//  *
-//  * ***********************************************/
-
-router.use(checkJwt);
-
-/** ADD task
- * @TODO Add middleware to ensure user is logged in
- * /** Each time an task is added to a group, a notification should fire for that group's channel
- * Additionally, the event should be stored into the notifications table for future review
- * The notifications table will need to contain a record of the:
- *      userID
- *      groupID
- *      time of action
- *      type of action
- *
- */
-router.post("/", (req, res) => {
-  const task = req.body;
-  let { groupID } = task;
-
+taskRouter.post('/', (req, res) => {
+  const task = req.body
   taskDb
     .add(task)
     .then(id => {
-      // get group and user information for notification
-      // we can assume the user in req.user is performing this action via checkJwt
-      let notification = {};
-      // can we abstract this into a function?
-      userDb.getProfileByEmail(req.user.email).then(user => {
-        notification.userID = user[0].id;
-        notification.userName = user[0].name;
-
-        groupDb.getById(groupID).then(group => {
-          notification.groupID = group[0].id;
-          notification.groupName = group[0].name;
-          notification.action = "add-task";
-          notification.content = `${notification.userName} added ${
-            task.name
-          } to the ${notification.groupName} chores list.`;
-
-          pusher.trigger(`group-${groupID}`, "add-task", {
-            message: `${notification.userName} added ${task.name} to the ${
-              notification.groupName
-            } chores list.`,
-            timestamp: moment().format()
-          });
-
-          beamsClient
-            .publishToInterests([`group-${groupID}`], {
-              apns: {
-                aps: {
-                  alert: notification.content
-                }
-              },
-              fcm: {
-                notification: {
-                  title: `New task Added`,
-                  body: notification.content
-                }
-              }
-            })
-            .then(publishResponse => {
-              console.log("task notification", publishResponse.publishId);
-            })
-            .catch(error => {
-              console.log("error", error);
-            });
-
-          console.log("NOTIFICATION\n\n", notification);
-
-          notificationDb.add(notification).then(response => {
-            console.log("notification added", response);
-            return res
-              .status(200)
-              .json({ message: `task successfully added`, id: id[0] });
-          });
-        });
-      });
+      res.status(200).json({ message: `Task successfully added`, id: id[0] })
     })
     .catch(err => {
-      console.log(err);
-      return res.status(500).json(err);
-    });
-});
+      res.status(500).json({ message: `Task could not be added`, err })
+    })
+})
 
-/**************************************************/
 
-/** GET task BY ID
- * @TODO Add middleware to ensure user is logged in
- * **/
+// GET TASK BY ID //
 
-/**************************************************/
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
-
+taskRouter.get('/:id', (req, res) => {
+  const { id } = req.params
   taskDb
     .getById(id)
     .then(task => {
       if (task.length >= 1) {
+<<<<<<< HEAD
         return res.status(200).json({ data: task });
       }
 
@@ -164,11 +63,29 @@ router.get("/:id", (req, res) => {
 /**************************************************/
 router.get("/group/:id", (req, res) => {
   const { id } = req.params;
+=======
+        return res.status(200).json({ data: task })
+      } else {
+        return res.status(404).json({ message: 'The requested task does not exist.' })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: `Task could not be retrieved`, err })
+    })
+})
+
+
+// GET TASK BY GROUP ID //
+
+taskRouter.get('/group/:id', (req, res) => {
+  const { id } = req.params
+>>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d
 
   taskDb
     .getByGroup(id)
     .then(task => {
       if (task.length >= 1) {
+<<<<<<< HEAD
         return res.status(200).json({ data: task });
       }
 
@@ -195,10 +112,28 @@ router.get("/group/:id", (req, res) => {
 /**************************************************/
 
 router.get("/", (req, res) => {
+=======
+        return res.status(200).json({ data: task })
+      }
+      return res
+        .status(404)
+        .json({ message: 'The requested task does not exist.' })
+    })
+    .catch(err => {
+      res.status(500).json({ message: `Task could not be retrived`, err })
+    })
+})
+
+
+// GET ALL TASKS //
+
+taskRouter.get('/', (req, res) => {
+>>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d
   taskDb
     .get()
     .then(tasks => {
       if (tasks.length >= 1) {
+<<<<<<< HEAD
         return res.status(200).json({ data: tasks });
       }
 
@@ -407,3 +342,84 @@ router.delete("/:id", (req, res) => {
 });
 
 module.exports = router;
+=======
+        return res.status(200).json({ data: tasks })
+      }
+      return res
+        .status(404)
+        .json({ message: `The requested tasks do not exist.` })
+    })
+    .catch(err => {
+      res.status(500).json({ message: `Tasks could not be retrieved`, err })
+    })
+})
+
+
+
+
+
+// UPDATE TASK //
+
+taskRouter.put('/:id', (req, res) => {
+  let { id } = req.params
+  let changes = req.body
+  taskDb
+    .getById(id)
+    .then(task => {
+      taskDb.update(id, changes).then(status => {
+        if (status.length >= 1) {
+          return res
+            .status(200)
+            .json({ message: `Task successfully updated.` })
+        } else {
+          return res
+            .status(404)
+            .json({ message: 'The requested task does not exist.' })
+        }
+      })
+    })
+
+    .catch(err => {
+      res.status(500).json({ message: `Task could not be `, err })
+    })
+})
+
+// DELETE A TASK //
+
+taskRouter.delete('/:id', (req, res) => {
+  const { id } = req.params
+
+  taskDb
+    .remove(id)
+    .then(status => {
+      if (status.length >= 1) {
+        return res
+          .status(200)
+          .json({ message: `Task successfully deleted.` })
+      } else {
+        return res
+          .status(404)
+          .json({ error: `The requested task does not exist.` })
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: `Task could not be deleted`, err })
+    })
+})
+
+
+
+
+module.exports = taskRouter
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d

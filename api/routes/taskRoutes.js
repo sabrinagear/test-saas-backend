@@ -12,7 +12,7 @@ const moment = require('moment')
 
 // taskRouter.use(checkJwt)
 
-// ADD Task //
+// ADD TASK //
 
 taskRouter.post('/', (req, res) => {
   const task = req.body

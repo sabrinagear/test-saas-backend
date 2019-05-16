@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("users", table => {
+  return knex.schema.dropTableIfExists("users").createTable("users", table => {
     table.increments("id");
     table
       .string("email", 255)
@@ -12,8 +12,8 @@ exports.up = function(knex, Promise) {
     table
       .integer("subscriptionType")
       .references("id")
-      .inTable("subscriptions")
-      .defaultTo(1);
+      .inTable("subscriptions");
+    // .defaultTo(1);
     table.timestamp("createdAt").defaultTo(knex.fn.now());
     table.timestamp("updatedAt").defaultTo(knex.fn.now());
   });

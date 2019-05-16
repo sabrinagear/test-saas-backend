@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("lists", table => {
+  return knex.schema.dropTableIfExists("lists").createTable("lists", table => {
     table.increments("id");
     table
       .string("list", 255)

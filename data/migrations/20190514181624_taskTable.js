@@ -8,7 +8,8 @@ exports.up = function(knex, Promise) {
       table
         .integer("assignedTo")
         .references("id")
-        .inTable("groupMembers");
+        .inTable("groupMembers")
+        .onDelete("CASCADE");
       table
         .integer("groupId")
         .references("id")

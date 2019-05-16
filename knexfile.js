@@ -2,16 +2,16 @@ require("dotenv").config();
 var localPg = require("pg");
 
 localPg = {
-  host: "localhost",
-  database: 'api',
-  user: 'ryan',
-  password: 'pass',
-  port: 5432,
+  host: process.env.host,
+  database: process.env.database,
+  user: process.env.user,
+  password: process.env.password,
+  port: process.env.port,
   defaults: {
     ssl: true
   }
 };
-const dbConnection = process.env.DATABASE_URL || localPg;
+const dbConnection = process.env.DATABASE_URL;
 
 module.exports = {
   development: {

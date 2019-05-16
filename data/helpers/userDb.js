@@ -37,12 +37,14 @@ function add(user) {
     .into("users");
 }
 function update(id, changes) {
-  return db("users")
-    .where("id", Number(id)) // ensure the id is a number not a string
-    .update(changes);
+  return db('users')
+    .returning('id')
+    .where({ id })
+    .update(changes)
 }
 function remove(id) {
-  return db("users")
+  return db('users')
+    .returning('id')
     .where({ id })
-    .del();
+    .del()
 }

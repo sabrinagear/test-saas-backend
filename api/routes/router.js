@@ -21,8 +21,8 @@ router.get("/", (req, res) => {
 router.use("/users", userRoutes);
 router.use("/group", groupRoutes);
 // router.use("/subscription", subscriptionRoutes);
-router.use("/task", taskRoutes);
-router.use("/groupmember", groupMemberRoutes);
+router.use("/tasks", taskRoutes);
+router.use("/groupmembers", groupMemberRoutes);
 router.use("/list", listRoutes);
 router.use("/notification", notificationRoutes);
 router.use("/invite", inviteRoutes);

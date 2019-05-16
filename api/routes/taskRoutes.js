@@ -35,35 +35,6 @@ taskRouter.get('/:id', (req, res) => {
     .getById(id)
     .then(task => {
       if (task.length >= 1) {
-<<<<<<< HEAD
-        return res.status(200).json({ data: task });
-      }
-
-      return res
-        .status(404)
-        .json({ message: "The requested task does not exist." });
-    })
-    .catch(err => {
-      const error = {
-        message: `Internal Server Error - Retrieving task`,
-        data: {
-          err: err
-        }
-      };
-      return res.status(500).json(error);
-    });
-});
-
-/**************************************************/
-
-/** GET task BY GROUP ID
- * @TODO Add middleware to ensure user is logged in
- * **/
-
-/**************************************************/
-router.get("/group/:id", (req, res) => {
-  const { id } = req.params;
-=======
         return res.status(200).json({ data: task })
       } else {
         return res.status(404).json({ message: 'The requested task does not exist.' })
@@ -79,40 +50,11 @@ router.get("/group/:id", (req, res) => {
 
 taskRouter.get('/group/:id', (req, res) => {
   const { id } = req.params
->>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d
 
   taskDb
     .getByGroup(id)
     .then(task => {
       if (task.length >= 1) {
-<<<<<<< HEAD
-        return res.status(200).json({ data: task });
-      }
-
-      return res
-        .status(404)
-        .json({ message: "The requested task does not exist." });
-    })
-    .catch(err => {
-      const error = {
-        message: `Internal Server Error - Retrieving task`,
-        data: {
-          err: err
-        }
-      };
-      return res.status(500).json(error);
-    });
-});
-
-/**************************************************/
-
-// GET ALL taskS
-/** @TODO This should be set to sysadmin privileges for subscription privacy **/
-
-/**************************************************/
-
-router.get("/", (req, res) => {
-=======
         return res.status(200).json({ data: task })
       }
       return res
@@ -128,221 +70,10 @@ router.get("/", (req, res) => {
 // GET ALL TASKS //
 
 taskRouter.get('/', (req, res) => {
->>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d
   taskDb
     .get()
     .then(tasks => {
       if (tasks.length >= 1) {
-<<<<<<< HEAD
-        return res.status(200).json({ data: tasks });
-      }
-
-      return res
-        .status(404)
-        .json({ message: `The requested tasks do not exist.` });
-    })
-    .catch(err => {
-      const error = {
-        message: `Internal Server Error - Getting tasks`,
-        data: {
-          err: err
-        }
-      };
-      return res.status(500).json(error);
-    });
-});
-
-/**************************************************/
-/**
- * UPDATE task
- * @TODO Add middleware to ensure users can only change their own group information
- */
-
-/**************************************************/
-router.put("/:id", (req, res) => {
-  let { id } = req.params;
-  let changes = req.body;
-  // changes.price = parseFloat(changes.price);
-  console.log("id, changes", id, changes);
-  taskDb
-    .getById(id)
-    .then(task => {
-      let oldtask = task[0];
-
-      taskDb.update(id, changes).then(status => {
-        console.log("task update", status);
-
-        if (status.length >= 1 || status === 1) {
-          let notification = {};
-          userDb.getProfileByEmail(req.user.email).then(user => {
-            notification.userID = user[0].id;
-            notification.userName = user[0].name;
-
-            taskDb.getById(id).then(newtask => {
-              let { groupID } = newtask[0];
-
-              groupDb.getById(groupID).then(group => {
-                notification.groupID = group[0].id;
-                notification.groupName = group[0].name;
-                notification.action = "update-task";
-                notification.content = `${notification.userName} updated ${
-                  oldtask.name
-                } to ${newtask[0].name} in the ${
-                  notification.groupName
-                } chores list.`;
-
-                pusher.trigger(`group-${groupID}`, "update-task", {
-                  message: `${notification.userName} updated ${
-                    oldtask.name
-                  } to ${newtask[0].name} in the ${
-                    notification.groupName
-                  } chores list.`,
-                  timestamp: moment().format()
-                });
-
-                beamsClient
-                  .publishToInterests([`group-${groupID}`], {
-                    apns: {
-                      aps: {
-                        alert: notification.content
-                      }
-                    },
-                    fcm: {
-                      notification: {
-                        title: `task Updated`,
-                        body: notification.content
-                      }
-                    }
-                  })
-                  .then(publishResponse => {
-                    console.log("task notification", publishResponse.publishId);
-                  })
-                  .catch(error => {
-                    console.log("error", error);
-                  });
-
-                console.log("NOTIFICATION\n\n", notification);
-
-                notificationDb.add(notification).then(response => {
-                  console.log("notification added", response);
-                  return res.status(200).json({
-                    message: "task updated successfully",
-                    id: status[0]
-                  });
-                });
-              });
-            });
-          });
-        } else {
-          return res
-            .status(404)
-            .json({ message: "The requested task does not exist." });
-        }
-      });
-    })
-    .catch(err => {
-      const error = {
-        message: `Internal Server Error - Updating task`,
-        data: {
-          err: err
-        }
-      };
-      return res.status(500).json(error);
-    });
-});
-
-/**************************************************/
-
-/** DELETE task
- * @TODO Add middleware to prevent unauthorized deletions
- * **/
-
-/**************************************************/
-
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  taskDb
-    .getById(id)
-    .then(task => {
-      let { groupID } = task[0];
-      let oldtask = task[0];
-      taskDb.remove(id).then(status => {
-        console.log("remove status", status);
-        if (status.length >= 1 || status === 1) {
-          let notification = {};
-          userDb.getProfileByEmail(req.user.email).then(user => {
-            notification.userID = user[0].id;
-            notification.userName = user[0].name;
-
-            groupDb.getById(groupID).then(group => {
-              notification.groupID = group[0].id;
-              notification.groupName = group[0].name;
-              notification.action = "delete-task";
-              notification.content = `${notification.userName} removed ${
-                oldtask.name
-              } from the ${notification.groupName} chores list.`;
-
-              pusher.trigger(`group-${groupID}`, "delete-task", {
-                message: `${notification.userName} removed ${
-                  oldtask.name
-                } from the ${notification.groupName} chores list.`,
-                timestamp: moment().format()
-              });
-
-              beamsClient
-                .publishToInterests([`group-${groupID}`], {
-                  apns: {
-                    aps: {
-                      alert: notification.content
-                    }
-                  },
-                  fcm: {
-                    notification: {
-                      title: `task Deleted`,
-                      body: notification.content
-                    }
-                  }
-                })
-                .then(publishResponse => {
-                  console.log("task notification", publishResponse.publishId);
-                })
-                .catch(error => {
-                  console.log("error", error);
-                });
-
-              console.log("NOTIFICATION\n\n", notification);
-
-              notificationDb.add(notification).then(response => {
-                console.log("notification added", response);
-                return res
-                  .status(200)
-                  .json({
-                    message: "task removed successfully",
-                    id: status[0]
-                  });
-              });
-            });
-          });
-        } else {
-          return res
-            .status(404)
-            .json({ message: "The requested task does not exist." });
-        }
-      });
-    })
-    .catch(err => {
-      const error = {
-        message: `Internal Server Error - Removing task`,
-        data: {
-          err: err
-        }
-      };
-      return res.status(500).json(error);
-    });
-});
-
-module.exports = router;
-=======
         return res.status(200).json({ data: tasks })
       }
       return res
@@ -422,4 +153,3 @@ module.exports = taskRouter
 
 
 
->>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d

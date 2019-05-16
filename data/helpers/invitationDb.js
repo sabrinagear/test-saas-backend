@@ -11,7 +11,7 @@ function getByCode(inviteCode) {
   return db
     .select("*")
     .from("invitations")
-    .where("id", inviteCode);
+    .where("inviteCode", inviteCode);
 }
 function getAll() {
   // get all invitations. used for development, we probably should remove it for production

@@ -95,6 +95,8 @@ inviteRouter.post('/create', (req, res) => {
 
 inviteRouter.get('/:code', (req, res) => {
   let inviteCode = req.params.code
+  console.log(inviteCode);
+  console.log(typeof inviteCode);
   inviteDb
     .getByCode(inviteCode)
     .then(info => {

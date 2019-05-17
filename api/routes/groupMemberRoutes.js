@@ -25,8 +25,6 @@ const db = require("../../data/helpers/groupMemberDb");
  *
  * ***********************************************/
 
-router.use();
-
 /** ADD GROUP MEMBER
  * @TODO Add middleware to ensure user is logged in
  * **/
@@ -128,7 +126,7 @@ router.get("/user/:id", (req, res) => {
  * **/
 
 /**************************************************/
-router.get("/getmember/", (req, res) => {
+router.get("/getmember", (req, res) => {
   let groupMem = req.body;
 
   if (!groupMem.groupID || typeof groupMem.groupID !== "number")

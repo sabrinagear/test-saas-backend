@@ -6,8 +6,6 @@ const groupMembersDb = require("../../data/helpers/groupMemberDb");
 const usersDb = require("../../data/helpers/userDb");
 const nodemailer = require("nodemailer");
 
-
-
 /****************************************************************************************************/
 /** THIS ROUTER HANDLES ALL REQUESTS TO THE /api/group ENDPOINT **/
 /****************************************************************************************************/
@@ -37,7 +35,7 @@ const nodemailer = require("nodemailer");
 /** ADD GROUP
  * @TODO Add middleware to ensure user is logged in
  * **/
-router.post("/", , (req, res) => {
+router.post("/", (req, res) => {
   let group = req.body;
   const subType = req.subscriptionType;
   console.log("GROUP => ", group);

@@ -1,13 +1,12 @@
 const express = require("express");
-const taskRouter = express.Router();
+const router = express.Router();
 const db = require("../../data/helpers/taskDb");
 
 // taskRouter.use(checkJwt)
 
 // GET TASK BY ID //
-taskRouter.get("/", (req, res) => {
-  taskDb
-    .get()
+router.get("/", (req, res) => {
+  db.get()
     .then(tasks => {
       if (tasks.length >= 1) {
         return res.status(200).json({ data: tasks });
@@ -20,7 +19,7 @@ taskRouter.get("/", (req, res) => {
       res.status(500).json({ message: `Tasks could not be retrieved`, err });
     });
 });
-taskRouter.get("/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
   db.getById(id)
     .then(task => {
@@ -38,11 +37,10 @@ taskRouter.get("/:id", (req, res) => {
 });
 // UPDATE TASK //
 
-taskRouter.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   let { id } = req.params;
   let changes = req.body;
-  taskDb
-    .getById(id)
+  db.getById(id)
     .then(task => {
       taskDb.update(id, changes).then(status => {
         if (status.length >= 1) {
@@ -64,11 +62,10 @@ taskRouter.put("/:id", (req, res) => {
 
 // DELETE A TASK //
 
-taskRouter.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   const { id } = req.params;
 
-  taskDb
-    .remove(id)
+  db.remove(id)
     .then(status => {
       if (status.length >= 1) {
         return res.status(200).json({ message: `Task successfully deleted.` });
@@ -85,11 +82,10 @@ taskRouter.delete("/:id", (req, res) => {
 
 // GET TASK BY GROUP ID //
 
-taskRouter.get("/group/:id", (req, res) => {
+router.get("/group/:id", (req, res) => {
   const { id } = req.params;
 
-  taskDb
-    .getByGroup(id)
+  db.getByGroup(id)
     .then(task => {
       if (task.length >= 1) {
         return res.status(200).json({ data: task });
@@ -102,4 +98,4 @@ taskRouter.get("/group/:id", (req, res) => {
       res.status(500).json({ message: `Task could not be retrived`, err });
     });
 });
-module.exports = taskRouter;
+module.exports = router;

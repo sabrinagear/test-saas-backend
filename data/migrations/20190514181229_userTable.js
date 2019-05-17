@@ -17,10 +17,15 @@ exports.up = function(knex, Promise) {
       .integer("subscriptionType")
       .references("id")
 <<<<<<< HEAD
+<<<<<<< HEAD
       .inTable("subscriptions")
       .defaultTo(1);
 =======
       .inTable("subscriptions");
+=======
+      .inTable("subscriptions")
+      .onDelete("CASCADE");
+>>>>>>> 9b39c5865229407dc39ae368382b3ff8b5ae0ee5
     // .defaultTo(1);
 >>>>>>> cfeb8baac6ae25d33764a7194fd13ca2faea698d
     table.timestamp("createdAt").defaultTo(knex.fn.now());

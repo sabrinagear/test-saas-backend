@@ -2,7 +2,7 @@ require("dotenv").config();
 var localPg = require("pg");
 
 localPg = {
-  host: process.env.host,
+  host: "localhost",
   database: process.env.database,
   user: process.env.user,
   password: process.env.password,

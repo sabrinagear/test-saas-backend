@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../data/helpers/groupMemberDb");
 
-const checkJwt = require("../auth/checkJwt");
-const checkUser = require("../auth/checkUser");
+// const checkJwt = require("../auth/checkJwt");
+// const checkUser = require("../auth/checkUser");
 // checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
 
 /****************************************************************************************************/
@@ -27,19 +27,19 @@ const checkUser = require("../auth/checkUser");
  *
  * ***********************************************/
 
-router.use(checkJwt);
+// router.use(checkJwt);
 
 /** ADD GROUP MEMBER
  * @TODO Add middleware to ensure user is logged in
  * **/
 router.post("/", (req, res) => {
   const groupMem = req.body;
-
-  if (!groupMem.groupID || typeof groupMem.groupID !== "number")
+  console.log("gMR - 37");
+  if (!groupMem.groupId || typeof groupMem.groupId !== "number")
     return res
       .status(404)
       .json({ message: `groupID does not exist or is invalid.` });
-  if (!groupMem.userID || typeof groupMem.userID !== "number")
+  if (!groupMem.userId || typeof groupMem.userId !== "number")
     return res
       .status(404)
       .json({ message: `userID does not exist or is invalid.` });
@@ -51,6 +51,7 @@ router.post("/", (req, res) => {
         .json({ message: `Group member added.`, id: id[0] });
     })
     .catch(err => {
+      console.log(err);
       const error = {
         message: `Internal Server Error - Adding Group Member`,
         data: {
@@ -68,7 +69,7 @@ router.post("/", (req, res) => {
  * **/
 
 /**************************************************/
-router.get("/group/:id", checkUser, (req, res) => {
+router.get("/group/:id", (req, res) => {
   const { id } = req.params;
 
   db.getByGroup(id)

@@ -76,6 +76,18 @@ router.put("/:id", async (req, res) => {
 
 // *** CREATE NEW USER ** //
 
+router.post('/', (req, res) => {
+  const user = req.body
+  db
+    .add(user)
+    .then(id => {
+      res.status(200).json({ message: `user successfully added` })
+    })
+    .catch(err => {
+      res.status(500).json({ message: `user could not be added`, err })
+    })
+})
+
 router.get("/check/getid", (req, res) => {
   let { email } = req.user;
   db.getIdByEmail(email)

@@ -144,81 +144,90 @@ inviteRouter.get('/:code', (req, res) => {
 // if invitation is accepted, add new user to groupMembers db
 
 inviteRouter.post('/join', (req, res) => {
-  // req.body must contain the invitation code
-  console.log(req.user)
+  // req.body must contain the invitation code and the user's ID
+  const { userID, inviteCode } = req.body
 
-  var newID
+  // var newID = userID
 
-  usersDb
-    .getIdByEmail(req.user.email)
-    .then(id => {
-      if (!id || id.length === 0) {
-        console.log('no user found, creating new user')
+  // usersDb
+  //   .getIdByEmail(req.user.email)
+  //   .then(id => {
+  //     if (!id || id.length === 0) {
+  //       console.log('no user found, creating new user')
 
-        let newUser = {
-          email: req.user.email,
-          name: req.user.name,
-          profilePicture: req.user.picture
-        }
+  //       let newUser = {
+  //         email: req.user.email,
+  //         name: req.user.name,
+  //         profilePicture: req.user.picture
+  //       }
 
-        usersDb.add(newUser).then(id => {
-          console.log('newuser ID', id[0])
-          newID = id[0].id
-        })
-      } else {
-        newID = id[0].id
-      }
-      console.log('JOIN ID', id)
-      console.log((newID = newID))
+  //       usersDb.add(newUser).then(id => {
+  //         console.log('newuser ID', id[0])
+  //         newID = id[0].id
+  //       })
+  //     } else {
+  //       newID = id[0].id
+  //     }
+      // console.log('JOIN ID', id)
+      // console.log((newID = newID))
       let newMember = {}
-      newMember.userID = newID // start constructing the newMember
-      inviteDb.getByCode(req.body.inviteCode).then(invite => {
+      newMember.userID = userID // start constructing the newMember
+      inviteDb.getByCode(inviteCode).then(invite => {
         // console.log(invite[0].usedBefore);
         if (invite[0].usedBefore === 0 || invite[0].usedBefore === false) {
+        //   return res
+        //     .status(400)
+        //     .json({
+        //       message: `This invitation has expired.`
+        //     })
+        // } else {
           newMember.groupID = invite[0].groupID // the group ID that is in the invitation
           // console.log('newmemebr', newMember);
-          let changes = invite[0]
-          changes.usedBefore = true // mark the invitation as having been visited
-          inviteDb.update(invite[0].id, changes).then(status => {
+          let invite_to_update = invite[0]
+          invite_to_update.usedBefore = true // mark the invitation as having been visited
+          inviteDb.update(invite[0].id, invite_to_update).then(status => {
             // console.log(status);
             // add the new user into the database as a member of the given group ID
-
             groupMembersDb
-              .getById(newMember.groupID, newMember.userID)
-              .then(response => {
-                if (response.length > 0) {
-                  // ensure that the user is not already a member of the group
+            .getById(newMember.groupID, newMember.userID)
+            .then(response => {
+              if (response.length > 0) {
+                // ensure that the user is not already a member of the group
+                return res
+                .status(400)
+                .json({
+                  message: `User is already a member of that group.`
+                })
+              }
+              else {
+                groupMembersDb.add(newMember).then(newId => {
+                  console.log('success', newId)
                   return res
-                    .status(400)
-                    .json({
-                      message: `User is already a member of that group.`
-                    })
-                } else {
-                  groupMembersDb.add(newMember).then(newId => {
-                    console.log('success', newId)
-                    return res
-                      .status(201)
-                      .json({
-                        message: `New group member added with ID ${newId[0]}.`,
-                        id: id[0]
-                      })
-                  })
-                }
-              })
-          })
-        } else {
+                  .status(201)
+                  .json({
+                    message: `New group member added with ID ${newId[0]}.`,
+                    id: id[0]
+                  }) //
+                })//
+              }//
+            })//
+          })//
+        }//
+        else {
           return res
-            .status(400)
-            .json({ error: `That invitation is no longer valid.` })
-        }
-      })
-    })
+        .status(400)
+        .json({ error: `That invitation is no longer valid.` })
+        }//
+      })//
+    })//
     .catch(err => {
       console.log(err)
       return res
         .status(500)
         .json({ error: `Internal server error.`, data: err })
     })
-})
+
+
+
 
 module.exports = inviteRouter

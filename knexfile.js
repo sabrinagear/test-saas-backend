@@ -16,7 +16,7 @@ const dbConnection = process.env.DATABASE_URL;
 module.exports = {
   development: {
     client: "pg",
-    connection: localPg,
+    connection: dbConnection + "?ssl=true",
     useNullAsDefault: true,
     migrations: {
       tableName: "knex_migrations",

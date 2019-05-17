@@ -3,14 +3,14 @@ var localPg = require("pg");
 
 localPg = {
   host: "localhost",
-  database: 'api',
-  user: 'ryan',
-  password: 'pass',
-  port: 5432,
+  database: process.env.database,
+  user: process.env.user,
+  password: process.env.password,
+  port: process.env.dbPort,
   defaults: {
     ssl: true
   }
- };
+};
 const dbConnection = process.env.DATABASE_URL;
 
 module.exports = {

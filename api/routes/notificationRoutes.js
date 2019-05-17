@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../data/helpers/notificationDb");
 
-const checkJwt = require("../auth/checkJwt");
-// checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
-
 if (process.env.NODE_ENV === "development") {
   var dotenv = require("dotenv"); // allows us to load .env variables in development mode
   dotenv.config();

@@ -6,10 +6,7 @@ const groupMembersDb = require("../../data/helpers/groupMemberDb");
 const usersDb = require("../../data/helpers/userDb");
 const nodemailer = require("nodemailer");
 
-const checkJwt = require("../auth/checkJwt");
-// checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
-const checkUser = require("../auth/checkUser");
-const checkSubscription = require("../auth/checkSub");
+
 
 /****************************************************************************************************/
 /** THIS ROUTER HANDLES ALL REQUESTS TO THE /api/group ENDPOINT **/
@@ -40,7 +37,7 @@ const checkSubscription = require("../auth/checkSub");
 /** ADD GROUP
  * @TODO Add middleware to ensure user is logged in
  * **/
-router.post("/", checkSubscription, (req, res) => {
+router.post("/", , (req, res) => {
   let group = req.body;
   const subType = req.subscriptionType;
   console.log("GROUP => ", group);

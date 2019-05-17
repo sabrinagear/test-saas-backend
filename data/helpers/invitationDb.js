@@ -2,6 +2,7 @@ const db = require("../config");
 
 module.exports = {
   getByCode,
+  getAll,
   add,
   update
 };
@@ -11,6 +12,12 @@ function getByCode(inviteCode) {
     .select("*")
     .from("invitations")
     .where("inviteCode", inviteCode);
+}
+function getAll() {
+  // get all invitations. used for development, we probably should remove it for production
+  return db
+  .select("*")
+  .from("invitations")
 }
 function add(invitation) {
   return db("invitations")

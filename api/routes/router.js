@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const express = require("express");
 const router = express.Router();
 
@@ -28,3 +29,35 @@ router.use("/notification", notificationRoutes);
 router.use("/invite", inviteRoutes);
 
 module.exports = router;
+=======
+const express = require("express");
+const router = express.Router();
+
+const userRoutes = require("./userRoutes");
+const groupRoutes = require("./groupRoutes");
+// const subscriptionRoutes = require("./subscriptionRoutes");
+const taskRoutes = require("./taskRoutes");
+const groupMemberRoutes = require("./groupMemberRoutes");
+const listRoutes = require("./listRoutes");
+const notificationRoutes = require("./notificationRoutes");
+const inviteRoutes = require("./invitationRoutes");
+
+// const validate = require("../auth/checkJwt");
+
+// router.use(validate);
+
+router.get("/", res => {
+  res.send("This is the API root endpoint.");
+});
+
+router.use("/user", userRoutes);
+router.use("/group", groupRoutes);
+// router.use("/subscription", subscriptionRoutes);
+router.use("/task", taskRoutes);
+router.use("/groupmember", groupMemberRoutes);
+router.use("/list", listRoutes);
+router.use("/notification", notificationRoutes);
+router.use("/invite", inviteRoutes);
+
+module.exports = router;
+>>>>>>> 0a1b9e5ee2020e4ad65b0dc4254cc2ee7d1d13a3

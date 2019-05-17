@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const express = require("express");
 const router = express.Router();
 const db = require("../../data/helpers/notificationDb");
@@ -208,9 +207,3 @@ router.delete("/:id", (req, res) => {
 });
 
 module.exports = router;
-=======
-const express = require("express");
-const router = express.Router();
-
-module.exports = router;
->>>>>>> 0a1b9e5ee2020e4ad65b0dc4254cc2ee7d1d13a3

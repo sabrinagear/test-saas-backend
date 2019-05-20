@@ -11,8 +11,6 @@ const userDb = require("../../data/helpers/userDb")
 
 
 
-
-
 // POST A USER //
 
 router.post('/', (req, res) => {

@@ -2,11 +2,11 @@ require("dotenv").config();
 var localPg = require("pg");
 
 localPg = {
-  host: process.env.host,
+  host: "localhost",
   database: process.env.database,
   user: process.env.user,
   password: process.env.password,
-  port: process.env.port,
+  port: process.env.dbPort,
   defaults: {
     ssl: true
   }
@@ -16,7 +16,7 @@ const dbConnection = process.env.DATABASE_URL;
 module.exports = {
   development: {
     client: "pg",
-    connection: localPg,
+    connection: dbConnection + "?ssl=true",
     useNullAsDefault: true,
     migrations: {
       tableName: "knex_migrations",

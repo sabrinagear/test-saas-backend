@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../data/helpers/groupMemberDb");
 
-const checkJwt = require("../auth/checkJwt");
-const checkUser = require("../auth/checkUser");
 // checkJwt middleware authenticates user tokens and ensures they are signed correctly in order to access our internal API
 
 /****************************************************************************************************/
@@ -26,8 +24,6 @@ const checkUser = require("../auth/checkUser");
  * @param groupMember.net is the total net gross amount of items they have spent
  *
  * ***********************************************/
-
-router.use(checkJwt);
 
 /** ADD GROUP MEMBER
  * @TODO Add middleware to ensure user is logged in
@@ -68,7 +64,7 @@ router.post("/", (req, res) => {
  * **/
 
 /**************************************************/
-router.get("/group/:id", checkUser, (req, res) => {
+router.get("/group/:id", (req, res) => {
   const { id } = req.params;
 
   db.getByGroup(id)
@@ -130,7 +126,7 @@ router.get("/user/:id", (req, res) => {
  * **/
 
 /**************************************************/
-router.get("/getmember/", (req, res) => {
+router.get("/getmember", (req, res) => {
   let groupMem = req.body;
 
   if (!groupMem.groupID || typeof groupMem.groupID !== "number")

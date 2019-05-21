@@ -35,6 +35,17 @@ router.get("/:id", (req, res) => {
       res.status(500).json({ message: `Task could not be retrieved`, err });
     });
 });
+// ADD A TASK //
+router.post("/", (req, res) => {
+  const task = req.body;
+  db.add(task)
+    .then(id => {
+      res.status(200).json({ message: `Task successfully added` });
+    })
+    .catch(err => {
+      res.status(500).json({ message: `Task could not be added`, err });
+    });
+});
 // UPDATE TASK //
 
 router.put("/:id", (req, res) => {

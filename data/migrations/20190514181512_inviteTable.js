@@ -18,7 +18,7 @@ exports.up = function(knex, Promise) {
       .onDelete("CASCADE")
       .notNullable(); // the id of the user who made the invitation
     tbl.string("invitee").notNullable(); // the email of the person receiving the invitation
-    tbl.datetime("expiration").notNullable(); // pass invite expiration upon creation
+    tbl.timestamp("expiration").defaultTo(knex.fn.now()); // pass invite expiration upon creation
     tbl.boolean("usedBefore").defaultTo(false); // checks if the code has been visited before
     tbl.timestamp("createdAt").defaultTo(knex.fn.now());
     tbl.timestamp("updatedAt").defaultTo(knex.fn.now());

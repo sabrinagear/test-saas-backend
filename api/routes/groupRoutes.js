@@ -5,11 +5,11 @@ const db = require("../../data/helpers/groupDb");
 router.post("/", (req, res) => {
   let group = req.body;
   db.add(group)
-    .then(res => {
-      res.status(200).json({ message: "hooray" });
+    .then(id => {
+      res.status(200).json({ message: "hooray", id });
     })
     .catch(err => {
-      res.status(500).json({ message: `user could not be added`, err });
+      res.status(500).json({ message: `group could not be added`, err });
     });
 });
 

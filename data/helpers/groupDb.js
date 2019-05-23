@@ -19,11 +19,11 @@ function getById(id) {
     .from("groups")
     .where({ id });
 }
-function getByUser(userId) {
+function getByUser(id) {
   return db
     .select("*")
     .from("groups")
-    .where({ userId });
+    .where("creatorId", id);
 }
 function add(group) {
   return db("groups")

@@ -42,6 +42,16 @@ router.get("/:id", (req, res) => {
     });
 });
 
+//GET by user //
+router.get("/user/:id", (req, res) => {
+  const { userId } = req.params;
+  db.getByUser(userId)
+    .then(groups => {
+      res.status(200).json(groups);
+    })
+    .catch(err => res.status(500).json(err.message));
+});
+
 // DELETE A group //
 
 router.delete("/:id", (req, res) => {

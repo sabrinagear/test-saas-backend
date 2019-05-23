@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const db = require("../../data/helpers/taskDb");
 
-// taskRouter.use(checkJwt)
-
 // GET TASK BY ID //
 router.get("/", (req, res) => {
   db.get()

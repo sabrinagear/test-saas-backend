@@ -44,8 +44,8 @@ router.get("/:id", (req, res) => {
 
 //GET by user //
 router.get("/user/:id", (req, res) => {
-  const { userId } = req.params;
-  db.getByUser(userId)
+  const { id } = req.params;
+  db.getByUser(id)
     .then(groups => {
       res.status(200).json(groups);
     })

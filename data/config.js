@@ -1,5 +1,5 @@
 // Define which database type to use
-const dbEngine = process.env.DB || "development";
+const dbEngine = process.env.NODE_ENV || "development";
 
 // Import the knexfile using the specified database type
 const config = require("../knexfile.js")[dbEngine];

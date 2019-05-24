@@ -10,7 +10,7 @@ const listRoutes = require("./listRoutes");
 const notificationRoutes = require("./notificationRoutes");
 const inviteRoutes = require("./invitationRoutes");
 const commentRoutes = require("./commentRoutes");
-
+const billingRoutes = require("./billingRoutes");
 // const validate = require("../auth/checkJwt");
 
 // router.use(validate);
@@ -28,5 +28,6 @@ router.use("/list", listRoutes);
 router.use("/notification", notificationRoutes);
 router.use("/invite", inviteRoutes);
 router.use("./comments", commentRoutes);
+router.use("/charge", billingRoutes);
 
 module.exports = router;

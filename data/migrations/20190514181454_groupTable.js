@@ -9,10 +9,10 @@ exports.up = function(knex, Promise) {
       .integer("creatorId")
       .references("id")
       .inTable("users")
-      .onDelete("CASCADE")
-      .notNullable();
+      .onDelete("CASCADE");
+    // .notNullable();
     tbl.string("name").notNullable();
-    tbl.string("token").nullable();
+
     tbl.timestamp("createdAt").defaultTo(knex.fn.now());
     tbl.timestamp("updatedAt").defaultTo(knex.fn.now());
   });

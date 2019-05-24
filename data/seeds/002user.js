@@ -5,10 +5,14 @@ exports.seed = function(knex, Promise) {
     .then(function() {
       // Inserts seed entries
       return knex("users").insert([
-        { email: "thor@avengers.com", name: "Thor" },
-        { email: "ironman@avengers.com", name: "Iron Man" },
-        { email: "captainamerica@avengers.com", name: "Captain America" },
-        { email: "antman@avengers.com", name: "Ant-man" }
+        { uid: "uidstring0", email: "thor@avengers.com", name: "Thor" },
+        { uid: "uidstring1", email: "ironman@avengers.com", name: "Iron Man" },
+        {
+          uid: "uidstring2",
+          email: "captainamerica@avengers.com",
+          name: "Captain America"
+        },
+        { uid: "uidstring3", email: "antman@avengers.com", name: "Ant-man" }
       ]);
     });
 };

@@ -13,12 +13,17 @@ exports.up = function(knex, Promise) {
     table
       .string("profilePicture", 255)
       .defaultTo("https://i.imgur.com/M8kRKQC.png");
+    table.string("location", 255);
+    table.integer("phone", 255);
+    table
+      .string("coverPhoto", 255)
+      .defaultTo("https://source.unsplash.com/random");
     table
       .integer("subscriptionType")
       .references("id")
       .inTable("subscriptions")
-      .onDelete("CASCADE");
-    // .defaultTo(1);
+      .onDelete("CASCADE")
+      .defaultTo(1);
     table.timestamp("createdAt").defaultTo(knex.fn.now());
     table.timestamp("updatedAt").defaultTo(knex.fn.now());
   });

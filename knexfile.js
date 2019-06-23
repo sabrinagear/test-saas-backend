@@ -1,32 +1,24 @@
 require("dotenv").config();
-var localPg = require("pg");
-
-localPg = {
-  host: "localhost",
-  database: process.env.database,
-  user: process.env.user,
-  password: process.env.password,
-  port: process.env.dbPort,
-  defaults: {
-    ssl: true
-  }
+localPgConnection = {
+  client: "localhost"
 };
-const dbConnection = process.env.DATABASE_URL;
+
+const dbConnection = process.env.DATABASE_URL || localPgConnection;
 
 module.exports = {
   development: {
-    client: "pg",
-    connection: dbConnection + "?ssl=true",
+    client: "sqlite3",
+    connection: {
+      filename: "./data/choremonkey.sqlite3"
+    },
     useNullAsDefault: true,
     migrations: {
-      tableName: "knex_migrations",
       directory: "./data/migrations"
     },
     seeds: {
       directory: "./data/seeds"
     }
   },
-
   production: {
     client: "pg",
     connection: dbConnection + "?ssl=true",
@@ -38,6 +30,8 @@ module.exports = {
       tableName: "knex_migrations",
       directory: "./data/migrations"
     },
-    seeds: { directory: "./data/seeds" }
+    seeds: {
+      directory: "./data/seeds"
+    }
   }
 };

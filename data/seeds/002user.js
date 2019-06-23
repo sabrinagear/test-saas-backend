@@ -5,14 +5,30 @@ exports.seed = function(knex, Promise) {
     .then(function() {
       // Inserts seed entries
       return knex("users").insert([
-        { uid: "uidstring0", email: "thor@avengers.com", name: "Thor" },
-        { uid: "uidstring1", email: "ironman@avengers.com", name: "Iron Man" },
+        {
+          uid: "uidstring0",
+          email: "thor@avengers.com",
+          name: "Thor",
+          location: "Boise, Idaho"
+        },
+        {
+          uid: "uidstring1",
+          email: "ironman@avengers.com",
+          name: "Iron Man",
+          location: "Denver, Colorado"
+        },
         {
           uid: "uidstring2",
           email: "captainamerica@avengers.com",
-          name: "Captain America"
+          name: "Captain America",
+          location: "Seattle, Washington"
         },
-        { uid: "uidstring3", email: "antman@avengers.com", name: "Ant-man" }
+        {
+          uid: "uidstring3",
+          email: "antman@avengers.com",
+          name: "Ant-man",
+          location: "Nashville, TN"
+        }
       ]);
     });
 };

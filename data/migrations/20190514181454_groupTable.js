@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
     tbl.increments("id");
     tbl
       .string("creatorId")
-      .references("id")
+      .references("uid")
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");

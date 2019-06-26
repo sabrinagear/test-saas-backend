@@ -5,10 +5,10 @@ exports.seed = function(knex, Promise) {
     .then(function() {
       // Inserts seed entries
       return knex("groups").insert([
-        { creatorId: 1, name: "Asgard castle rooms" },
-        { creatorId: 1, name: "Asgard gardens" },
-        { creatorId: 2, name: "Stark Equipment Maintenance" },
-        { creatorId: 3, name: "PR with Americans" }
+        { creatorId: "uidstring0", name: "Asgard castle rooms" },
+        { creatorId: "uidstring0", name: "Asgard gardens" },
+        { creatorId: "uidstring1", name: "Stark Equipment Maintenance" },
+        { creatorId: "uidstring2", name: "PR with Americans" }
       ]);
     });
 };

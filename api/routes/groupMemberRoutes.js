@@ -31,14 +31,14 @@ const db = require("../../data/helpers/groupMemberDb");
 router.post("/", (req, res) => {
   const groupMem = req.body;
 
-  if (!groupMem.groupID || typeof groupMem.groupID !== "number")
+  if (!groupMem.groupId || typeof groupMem.groupId !== "number")
     return res
       .status(404)
-      .json({ message: `groupID does not exist or is invalid.` });
-  if (!groupMem.userID || typeof groupMem.userID !== "number")
+      .json({ message: `groupId does not exist or is invalid.` });
+  if (!groupMem.userId || typeof groupMem.userId !== "number")
     return res
       .status(404)
-      .json({ message: `userID does not exist or is invalid.` });
+      .json({ message: `userId does not exist or is invalid.` });
 
   db.add(groupMem)
     .then(id => {

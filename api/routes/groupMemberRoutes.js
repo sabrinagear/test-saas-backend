@@ -129,16 +129,17 @@ router.get("/user/:id", (req, res) => {
 router.get("/getmember", (req, res) => {
   let groupMem = req.body;
 
-  if (!groupMem.groupID || typeof groupMem.groupID !== "number")
-    return res
-      .status(404)
-      .json({ message: `groupID does not exist or is invalid.` });
-  if (!groupMem.userID || typeof groupMem.userID !== "number")
-    return res
-      .status(404)
-      .json({ message: `userID does not exist or is invalid.` });
 
-  db.getById(groupMem.groupID, groupMem.userID)
+  if (!groupMem.groupId || typeof groupMem.groupId !== "number")
+    return res
+      .status(404)
+      .json({ message: `groupId does not exist or is invalid.` });
+  if (!groupMem.userId || typeof groupMem.userId !== "number")
+    return res
+      .status(404)
+      .json({ message: `userId does not exist or is invalid.` });
+
+  db.getById(groupMem.groupId, groupMem.userId)
     .then(mem => {
       if (mem.length >= 1) {
         return res.status(200).json({ data: mem });
@@ -171,7 +172,6 @@ router.get("/", (req, res) => {
     .then(mems => {
       if (mems) {
         return res.status(200).json({ data: mems });
-        return res.status(404).json({ error: `No groups exist.` });
       }
 
       return res.status(404).json({ error: `No groups exist.` });
@@ -279,3 +279,41 @@ router.get("/groups/user/:id", (req, res) => {
 });
 
 module.exports = router;
+
+
+/**************************************************/
+
+/** TOGGLE ADMIN STATUS **/
+
+/**************************************************/
+router.put("/update/:groupId/:userId", (req, res) => {
+  const { groupId, userId } = req.params;
+
+  db.getById(groupId, userId)
+  .then(mem => {
+    const {isAdmin} = mem[0]
+
+    if (mem.length >= 1) {
+      db.toggleAdmin(groupId, userId, isAdmin)
+      .then(toggledMember => {
+          return res
+            .status(200)
+            .json({ message: isAdmin ? "Admin privileges revoked" : "Admin privileges granted.", data: toggledMember});
+      })
+      .catch(err => {
+        const error = {
+          message: `Internal Server Error - Toggling Admin Status`,
+          data: {
+            err: err
+          }
+        };
+        return res.status(500).json(error);
+      });
+    }
+  })
+  .catch( err => {
+      return res
+      .status(404)
+      .json({ message: "This user does not belong in that group, or that group does not exist.", error: err });
+  })
+});

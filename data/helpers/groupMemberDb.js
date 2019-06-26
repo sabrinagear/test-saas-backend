@@ -10,7 +10,8 @@ module.exports = {
   add,
   update,
   remove,
-  removeGroup
+  removeGroup,
+  toggleAdmin
 };
 
 function get() {
@@ -36,7 +37,7 @@ function getById(groupId, userId) {
     .select("*")
     .from("groupMembers")
     .where({ groupId })
-    .where({ userId });
+    .andWhere({ userId });
 }
 
 function returnUserGroups(userId) {
@@ -72,4 +73,12 @@ function removeGroup(groupId) {
     .returning("id")
     .where({ groupId })
     .del();
+}
+
+function toggleAdmin(groupId, userId, isAdmin) {
+  return db("groupMembers")
+    .returning("*")
+    .where({ groupId })
+    .andWhere({ userId })
+    .update({ isAdmin: !isAdmin});
 }

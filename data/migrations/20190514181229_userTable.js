@@ -22,8 +22,8 @@ exports.up = function(knex, Promise) {
       .integer("subscriptionType")
       .references("id")
       .inTable("subscriptions")
-      .onDelete("CASCADE")
-      .defaultTo(1);
+      .onDelete("CASCADE");
+
     table.timestamp("createdAt").defaultTo(knex.fn.now());
     table.timestamp("updatedAt").defaultTo(knex.fn.now());
   });

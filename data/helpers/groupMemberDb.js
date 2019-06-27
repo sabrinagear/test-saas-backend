@@ -80,5 +80,5 @@ function toggleAdmin(groupId, userId, isAdmin) {
     .returning("*")
     .where({ groupId })
     .andWhere({ userId })
-    .update({ isAdmin: !isAdmin});
+    .update({ isAdmin: !isAdmin });
 }

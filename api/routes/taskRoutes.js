@@ -17,6 +17,7 @@ router.get("/", (req, res) => {
       res.status(500).json({ message: `Tasks could not be retrieved`, err });
     });
 });
+
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   db.getById(id)
@@ -34,59 +35,63 @@ router.get("/:id", (req, res) => {
     });
 });
 // ADD A TASK //
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const task = req.body;
-  db.add(task)
-    .then(id => {
-      res.status(200).json({ message: `Task successfully added` });
-    })
-    .catch(err => {
-      res.status(500).json({ message: `Task could not be added`, err });
+  try {
+    await db.add(task);
+    let updatedArray = await db.get();
+    return res.status(200).json({
+      tasks: updatedArray,
+      message: "Successfully Posted"
     });
-});
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+  });
+
 // UPDATE TASK //
 
-router.put("/:id", (req, res) => {
-  let { id } = req.params;
-  let changes = req.body;
-  db.getById(id)
-    .then(task => {
-      taskDb.update(id, changes).then(status => {
-        if (status.length >= 1) {
-          return res
-            .status(200)
-            .json({ message: `Task successfully updated.` });
-        } else {
-          return res
-            .status(404)
-            .json({ message: "The requested task does not exist." });
+router.put("/:id", async (req, res) => {
+        const { id } = req.params;
+        let changes = req.body;
+      try {
+        let task = await db.get(id)
+        if (!task) {
+          res
+          .status(404)
+          .json({ message: "The task with the specified ID does not exist." });
         }
+        await db.update(id, changes);
+        let updatedArray = await db.get();
+        return res.status(200).json({
+          tasks: updatedArray,
+          message: "Successfully Updated"
+        });
+      } catch (err) {
+        res.status(500).json(err.message);
+      }
       });
-    })
-
-    .catch(err => {
-      res.status(500).json({ message: `Task could not be `, err });
-    });
-});
 
 // DELETE A TASK //
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
-
-  db.remove(id)
-    .then(status => {
-      if (status.length >= 1) {
-        return res.status(200).json({ message: `Task successfully deleted.` });
-      } else {
-        return res
-          .status(404)
-          .json({ error: `The requested task does not exist.` });
-      }
-    })
-    .catch(err => {
-      res.status(500).json({ message: `Task could not be deleted`, err });
+  try {
+    let task = await db.get(id);
+    if (!task) {
+      res
+        .status(404)
+        .json({ message: "The task with the specified ID does not exist." });
+    }
+    await db.remove(id);
+    let updatedArray = await db.get();
+    return res.status(200).json({
+      tasks: updatedArray,
+      message: "successfully deleted"
     });
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
 });
 
 // GET TASK BY GROUP ID //

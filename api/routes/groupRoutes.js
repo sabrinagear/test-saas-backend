@@ -48,41 +48,57 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-// *** UPDATE ** //
-//updates the group and returns the updated group
 
-router.put("/:id", (req, res) => {
-  let { id } = req.params;
+
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
   let changes = req.body;
-  db.getById(id)
-    .then(group => {
-      db.update(id, changes).then(status => {
-        if (status.length >= 1) {
-          return res
-            .status(200)
-            .json({ message: `Task successfully updated.` });
-        } else {
-          return res
-            .status(404)
-            .json({ message: "The requested task does not exist." });
-        }
-      });
-    })
-
-    .catch(err => {
-      res.status(500).json({ message: `Task could not be `, err });
-    });
+try {
+  let group = await db.get(id)
+  if (!group) {
+    res
+    .status(404)
+    .json({ message: "The group with the specified ID does not exist." });
+  }
+  await db.update(id, changes);
+  let updatedArray = await db.get();
+  return res.status(200).json({
+    users: updatedArray,
+    message: "Successfully Updated"
+  });
+} catch (err) {
+  res.status(500).json(err.message);
+}
 });
 
-router.post("/", (req, res) => {
+
+
+
+router.post("/", async (req, res) => {
   const group = req.body;
-  db.add(group)
-    .then(group => {
-      res.status(200).json({ message: `group successfully added` });
-    })
-    .catch(err => {
-      res.status(500).json({ message: `group could not be added`, err });
+  try {
+    await db.add(group);
+    let updatedArray = await db.get();
+    return res.status(200).json({
+      groups: updatedArray,
+      message: "Successfully Posted"
     });
-});
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+  });
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

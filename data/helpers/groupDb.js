@@ -5,7 +5,7 @@ const db = require("../config");
 module.exports = {
   get,
   getById,
-  getByUser,
+
   add,
   update,
   remove
@@ -19,12 +19,7 @@ function getById(id) {
     .from("groups")
     .where({ id });
 }
-function getByUser(creatorId) {
-  return db
-    .select("*")
-    .from("groups")
-    .where({ creatorId });
-}
+
 function add(group) {
   return db("groups")
     .returning("id")

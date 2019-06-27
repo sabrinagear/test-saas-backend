@@ -129,7 +129,6 @@ router.get("/user/:id", (req, res) => {
 router.get("/getmember", (req, res) => {
   let groupMem = req.body;
 
-
   if (!groupMem.groupId || typeof groupMem.groupId !== "number")
     return res
       .status(404)
@@ -280,7 +279,6 @@ router.get("/groups/user/:id", (req, res) => {
 
 module.exports = router;
 
-
 /**************************************************/
 
 /** TOGGLE ADMIN STATUS **/
@@ -290,30 +288,39 @@ router.put("/update/:groupId/:userId", (req, res) => {
   const { groupId, userId } = req.params;
 
   db.getById(groupId, userId)
-  .then(mem => {
-    const {isAdmin} = mem[0]
+    .then(mem => {
+      const { isAdmin } = mem[0];
 
-    if (mem.length >= 1) {
-      db.toggleAdmin(groupId, userId, isAdmin)
-      .then(toggledMember => {
-          return res
-            .status(200)
-            .json({ message: isAdmin ? "Admin privileges revoked" : "Admin privileges granted.", data: toggledMember});
-      })
-      .catch(err => {
-        const error = {
-          message: `Internal Server Error - Toggling Admin Status`,
-          data: {
-            err: err
-          }
-        };
-        return res.status(500).json(error);
-      });
-    }
-  })
-  .catch( err => {
+      if (mem.length >= 1) {
+        db.toggleAdmin(groupId, userId, isAdmin)
+          .then(toggledMember => {
+            return res
+              .status(200)
+              .json({
+                message: isAdmin
+                  ? "Admin privileges revoked"
+                  : "Admin privileges granted.",
+                data: toggledMember
+              });
+          })
+          .catch(err => {
+            const error = {
+              message: `Internal Server Error - Toggling Admin Status`,
+              data: {
+                err: err
+              }
+            };
+            return res.status(500).json(error);
+          });
+      }
+    })
+    .catch(err => {
       return res
-      .status(404)
-      .json({ message: "This user does not belong in that group, or that group does not exist.", error: err });
-  })
+        .status(404)
+        .json({
+          message:
+            "This user does not belong in that group, or that group does not exist.",
+          error: err
+        });
+    });
 });

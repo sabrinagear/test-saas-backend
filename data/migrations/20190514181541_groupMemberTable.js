@@ -6,7 +6,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable("groupMembers", function(tbl) {
     tbl.increments("id");
     tbl
-      .integer("userId")
+      .string("userId")
       .references("uid")
       .inTable("users")
       .onDelete("CASCADE")

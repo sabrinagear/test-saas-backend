@@ -6,13 +6,13 @@ exports.up = function(knex, Promise) {
       .references("id")
       .inTable("tasks")
       .onDelete("CASCADE")
-      .notnullable();
+      .notNullable();
     tbl
       .integer("groupId")
       .references("id")
       .inTable("groups")
       .onDelete("CASCADE")
-      .notnullable();
+      .notNullable();
   });
 };
 

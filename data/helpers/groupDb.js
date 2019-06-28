@@ -3,38 +3,55 @@ const db = require("../config");
 
 // Export functions
 module.exports = {
-  get,
-  getById,
+  get: function(id) {
+    let query = db("groups as g");
+    if (id) {
+      query.select("*").where("id", id);
+      const promises = [query, this.getMembers(id)]; // [ users, groups ]
 
-  add,
-  update,
-  remove
-};
-function get() {
-  return db("groups");
-}
-function getById(id) {
-  return db
-    .select("*")
-    .from("groups")
-    .where({ id });
-}
+      return Promise.all(promises).then(function(results) {
+        let [groups, members] = results;
+        console.log(groups);
+        let group = groups[0];
+        group.members = members.map(m => m);
+        return group;
+      });
+    }
 
-function add(group) {
+    return query;
+  },
+
+  getMembers: function(id) {
+    return db("users as u")
+      .join("groupMembers as m", "m.userId", "u.uid" )
+      .select("*")
+      .where("m.groupId", id);
+  },
+
+
+// getById: function(id) {
+//   return db
+//     .select("*")
+//     .from("groups")
+//     .where({ id });
+// },
+
+add: function(group) {
   return db("groups")
     .returning("id")
     .insert(group)
     .into("groups");
-}
-function update(id, changes) {
+},
+update: function(id, changes) {
   return db("groups")
     .returning("id")
     .where({ id })
     .update(changes);
-}
-function remove(id) {
+},
+remove: function(id) {
   return db("groups")
     .returning("id")
     .where({ id })
     .del();
+}
 }

@@ -22,9 +22,8 @@ function getById(id) {
 
 function add(group) {
   return db("groups")
-    .returning("id")
     .insert(group)
-    .into("groups");
+    .then(ids => ({ id: ids[0] }));
 }
 function update(id, changes) {
   return db("groups")

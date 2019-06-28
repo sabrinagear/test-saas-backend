@@ -48,57 +48,46 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-
-
-
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
   let changes = req.body;
-try {
-  let group = await db.get(id)
-  if (!group) {
-    res
-    .status(404)
-    .json({ message: "The group with the specified ID does not exist." });
+  try {
+    let group = await db.get(id);
+    if (!group) {
+      res
+        .status(404)
+        .json({ message: "The group with the specified ID does not exist." });
+    }
+    await db.update(id, changes);
+    let updatedArray = await db.get();
+    return res.status(200).json({
+      users: updatedArray,
+      message: "Successfully Updated"
+    });
+  } catch (err) {
+    res.status(500).json(err.message);
   }
-  await db.update(id, changes);
-  let updatedArray = await db.get();
-  return res.status(200).json({
-    users: updatedArray,
-    message: "Successfully Updated"
-  });
-} catch (err) {
-  res.status(500).json(err.message);
-}
 });
-
-
-
 
 router.post("/", async (req, res) => {
   const group = req.body;
   try {
     await db.add(group);
-    let updatedArray = await db.get();
+    let arr = await db.get();
+    let gid = arr[arr.length - 1].id;
+    await memberDb.add({
+      groupId: gid,
+      userId: req.body.creatorId,
+      isAdmin: true
+    });
     return res.status(200).json({
-      groups: updatedArray,
-      message: "Successfully Posted"
+      groupId: gid,
+      groups: arr,
+      message: "Successfully Done"
     });
   } catch (err) {
     res.status(500).json(err.message);
   }
-  });
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 module.exports = router;

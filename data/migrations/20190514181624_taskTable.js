@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       table.string("title", 255).notNullable();
       table
         .string("assignedTo")
-        .references("id")
+        .references("userId")
         .inTable("groupMembers")
         .onDelete("CASCADE");
       table

@@ -5,14 +5,13 @@ exports.up = function(knex, Promise) {
       .string("taskId")
       .references("id")
       .inTable("tasks")
-      .onDelete("CASCADE")
-      .notNullable();
+      .onDelete("CASCADE");
+
     tbl
       .integer("groupId")
       .references("id")
       .inTable("groups")
-      .onDelete("CASCADE")
-      .notNullable();
+      .onDelete("CASCADE");
   });
 };
 

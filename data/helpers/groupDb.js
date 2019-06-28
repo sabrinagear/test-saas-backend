@@ -38,19 +38,18 @@ module.exports = {
 
 add: function(group) {
   return db("groups")
-    .returning("id")
     .insert(group)
-    .into("groups");
-},
+    .then(ids => ({ id: ids[0] }));
+ },
 update: function(id, changes) {
   return db("groups")
-    .returning("id")
+    .return("id")
     .where({ id })
     .update(changes);
 },
 remove: function(id) {
   return db("groups")
-    .returning("id")
+    .return("id")
     .where({ id })
     .del();
 }

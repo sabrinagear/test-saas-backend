@@ -28,33 +28,25 @@ const db = require("../../data/helpers/groupMemberDb");
 /** ADD GROUP MEMBER
  * @TODO Add middleware to ensure user is logged in
  * **/
-router.post("/", (req, res) => {
-  const groupMem = req.body;
-
-  if (!groupMem.groupId || typeof groupMem.groupId !== "number")
-    return res
-      .status(404)
-      .json({ message: `groupId does not exist or is invalid.` });
-  if (!groupMem.userId || typeof groupMem.userId !== "number")
-    return res
-      .status(404)
-      .json({ message: `userId does not exist or is invalid.` });
-
-  db.add(groupMem)
-    .then(id => {
-      return res
-        .status(200)
-        .json({ message: `Group member added.`, id: id[0] });
-    })
-    .catch(err => {
-      const error = {
-        message: `Internal Server Error - Adding Group Member`,
-        data: {
-          err: err
-        }
-      };
-      return res.status(500).json(error);
+router.post("/", async (req, res) => {
+  const groupmem = req.body;
+  try {
+    await db.add(groupmem);
+    let arr = await db.get();
+    let gid = arr[arr.length - 1].id;
+    await db.add({
+      groupId: gid,
+      userId: req.body.creatorId,
+      isAdmin: true
     });
+    return res.status(200).json({
+      groupId: gid,
+      members: arr,
+      message: "Successfully Done"
+    });
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
 });
 
 /**************************************************/
@@ -294,14 +286,12 @@ router.put("/update/:groupId/:userId", (req, res) => {
       if (mem.length >= 1) {
         db.toggleAdmin(groupId, userId, isAdmin)
           .then(toggledMember => {
-            return res
-              .status(200)
-              .json({
-                message: isAdmin
-                  ? "Admin privileges revoked"
-                  : "Admin privileges granted.",
-                data: toggledMember
-              });
+            return res.status(200).json({
+              message: isAdmin
+                ? "Admin privileges revoked"
+                : "Admin privileges granted.",
+              data: toggledMember
+            });
           })
           .catch(err => {
             const error = {
@@ -315,12 +305,10 @@ router.put("/update/:groupId/:userId", (req, res) => {
       }
     })
     .catch(err => {
-      return res
-        .status(404)
-        .json({
-          message:
-            "This user does not belong in that group, or that group does not exist.",
-          error: err
-        });
+      return res.status(404).json({
+        message:
+          "This user does not belong in that group, or that group does not exist.",
+        error: err
+      });
     });
 });

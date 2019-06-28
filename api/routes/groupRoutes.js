@@ -15,21 +15,20 @@ router.get("/", (req, res) => {
 // *** GET BY ID ** //
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-  db
-  .get(id)
-  .then(group => {
-    if (group) {
-      res.status(200).json(group);
-    } else {
-      res
-        .status(404)
-        .json({ message: "The group with the specified ID does not exist." });
-    }
-  })
-  .catch(err => {
-    console.log("Error: ", err);
-    res.status(500).json({ error: "The group couldn't be retrieved" });
-  });
+  db.get(id)
+    .then(group => {
+      if (group) {
+        res.status(200).json(group);
+      } else {
+        res
+          .status(404)
+          .json({ message: "The group with the specified ID does not exist." });
+      }
+    })
+    .catch(err => {
+      console.log("Error: ", err);
+      res.status(500).json({ error: "The group couldn't be retrieved" });
+    });
 });
 
 // *** DELETE ** //
@@ -73,6 +72,8 @@ router.put("/:id", async (req, res) => {
     res.status(500).json(err.message);
   }
 });
+
+/************* POST *************/
 
 router.post("/", async (req, res) => {
   const group = req.body;

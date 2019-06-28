@@ -13,18 +13,23 @@ router.get("/", (req, res) => {
 });
 
 // *** GET BY ID ** //
-router.get("/:id", async (req, res) => {
+router.get("/:id", (req, res) => {
   const { id } = req.params;
-  try {
-    let group = await db.getById(id);
-    console.log(group);
-    // let membersArray = memberDb.getbyGroup(id);
-    return res.status(200).json(group);
-  } catch (err) {
-    res.status(404).json({
-      message: "The group with the specified ID does not exist."
-    });
-  }
+  db
+  .get(id)
+  .then(group => {
+    if (group) {
+      res.status(200).json(group);
+    } else {
+      res
+        .status(404)
+        .json({ message: "The group with the specified ID does not exist." });
+    }
+  })
+  .catch(err => {
+    console.log("Error: ", err);
+    res.status(500).json({ error: "The group couldn't be retrieved" });
+  });
 });
 
 // *** DELETE ** //

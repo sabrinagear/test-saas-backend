@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
       return knex("tasks").insert([
         {
           title: "polish hammers",
-          assignedTo: 1,
+          assignedTo: "uidstring0",
           groupId: 1,
           description:
             "dust particles tend to turn into glass when struck, really hard to remove later (if they don't fly off and hit you in the eye)",
@@ -16,7 +16,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "insulate beds",
-          assignedTo: 4,
+          assignedTo: "uidstring3",
           groupId: 1,
           description: "he tosses and strikes when he's dreaming",
           dueDate: "2100-05-05",
@@ -24,7 +24,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "rake the leaves",
-          assignedTo: 2,
+          assignedTo: "uidstring1",
           groupId: 2,
           description: "keep it clean",
           dueDate: "2100-05-05",
@@ -32,7 +32,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "pick up leftover beers",
-          assignedTo: 3,
+          assignedTo: "uidstring2",
           groupId: 2,
           description: "big party yesterday, they don't stay in control",
           dueDate: "2100-05-05",
@@ -40,7 +40,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "remove lightning-struck trees",
-          assignedTo: 1,
+          assignedTo: "uidstring0",
           groupId: 2,
           description: "too many beers -_-",
           dueDate: "2100-05-05",
@@ -48,7 +48,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "refuel jet packs",
-          assignedTo: 2,
+          assignedTo: "uidstring1",
           groupId: 3,
           description: "almost didn't make it last time",
           dueDate: "2100-05-05",
@@ -56,7 +56,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "grease gears on iron suit",
-          assignedTo: 4,
+          assignedTo: "uidstring3",
           groupId: 3,
           description: "the suit is making funny noises when switching states",
           dueDate: "2100-05-05",
@@ -64,7 +64,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "prepare speech for Mr. America",
-          assignedTo: 4,
+          assignedTo: "uidstring3",
           groupId: 4,
           description: 'this time, don\'t begin with "I have a dream" ',
           dueDate: "2100-05-05",
@@ -72,7 +72,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "polish shield",
-          assignedTo: 3,
+          assignedTo: "uidstring2",
           groupId: 4,
           description: "gotta lookd good for the people",
           dueDate: "2100-05-05",
@@ -80,7 +80,7 @@ exports.seed = function(knex, Promise) {
         },
         {
           title: "iron Mr America's suit",
-          assignedTo: 4,
+          assignedTo: "uidstring3",
           groupId: 4,
           description: "it's been in the suitcase for too long",
           dueDate: "2100-05-05",

@@ -33,14 +33,8 @@ router.post("/", async (req, res) => {
   try {
     await db.add(groupmem);
     let arr = await db.get();
-    let gid = arr[arr.length - 1].id;
-    await db.add({
-      groupId: gid,
-      userId: req.body.creatorId,
-      isAdmin: true
-    });
+
     return res.status(200).json({
-      groupId: gid,
       members: arr,
       message: "Successfully Done"
     });

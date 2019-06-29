@@ -6,10 +6,11 @@ exports.up = function(knex, Promise) {
       table.increments("id");
       table.string("title", 255).notNullable();
       table
-        .integer("assignedTo")
-        .references("id")
-        .inTable("groupMembers")
-        .onDelete("CASCADE");
+        .string("assignedTo")
+        .references("uid")
+        .inTable("users")
+        .onDelete("CASCADE")
+        .onUpdate("CASCADE");
       table
         .integer("groupId")
         .references("id")

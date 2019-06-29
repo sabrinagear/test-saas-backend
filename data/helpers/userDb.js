@@ -5,6 +5,7 @@ module.exports = {
     let query = db("users as u");
     if (uid) {
       query.select("*").where("u.uid", uid);
+
       const promises = [query, this.getGroupsByUser(uid)]; // [ users, groups ]
 
       return Promise.all(promises).then(function(results) {

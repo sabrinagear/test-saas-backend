@@ -50,13 +50,13 @@ module.exports = {
   },
   update: function(id, changes) {
     return db("groups")
-      .return("id")
+      .returning("id")
       .where({ id })
       .update(changes);
   },
   remove: function(id) {
     return db("groups")
-      .return("id")
+      .returning("id")
       .where({ id })
       .del();
   }

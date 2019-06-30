@@ -78,7 +78,7 @@ router.put("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   const group = req.body;
   try {
-    await db.add(group);
+    db.add(group);
     let arr = await db.get();
     let gid = arr[arr.length - 1].id;
     await memberDb.add({

@@ -75,25 +75,15 @@ router.put("/:id", async (req, res) => {
 
 /************* POST *************/
 
-router.post("/", async (req, res) => {
-  const group = req.body;
-  try {
-    await db.add(group);
-    let arr = await db.get();
-    let gid = arr[arr.length - 1].id;
-    await memberDb.add({
-      groupId: gid,
-      userId: req.body.creatorId,
-      isAdmin: true
-    });
-    return res.status(200).json({
-      groupId: gid,
-      groups: arr,
-      message: "Successfully Done"
-    });
-  } catch (err) {
-    res.status(500).json(err.message);
-  }
+router.post("/", (req, res) => {
+  let group = req.body;
+  db.add(group)
+    .then(g =>
+      res.status(200).json({
+        group: g
+      })
+    )
+    .catch(err => res.status(500).json(err.message));
 });
 
 module.exports = router;

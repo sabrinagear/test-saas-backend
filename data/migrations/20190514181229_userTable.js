@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       .unique();
     table.string("name", 255).notNullable();
     table
-      .string("uid", 32)
+      .string("uid", 255)
       .notNullable()
       .unique();
     table

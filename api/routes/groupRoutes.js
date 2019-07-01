@@ -80,7 +80,7 @@ router.post("/", async (req, res) => {
   try {
     await db.add(group);
     let arr = await db.get();
-    let gid = arr[arr.length - 1].id;
+    let gid = await arr[arr.length - 1].id;
     await memberDb.add({
       groupId: gid,
       userId: req.body.creatorId,

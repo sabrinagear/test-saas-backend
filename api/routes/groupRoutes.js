@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../../data/helpers/groupDb");
-const memberDb = reqquire("../../data/helpers/groupMemberDb");
+const memberDb = require("../../data/helpers/groupMemberDb");
 
 // *** GET ALL ** //
 router.get("/", (req, res) => {

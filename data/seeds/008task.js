@@ -12,7 +12,7 @@ exports.seed = function(knex, Promise) {
           description:
             "dust particles tend to turn into glass when struck, really hard to remove later (if they don't fly off and hit you in the eye)",
           dueDate: "2100-05-05",
-          listId: 1
+         
         },
         {
           title: "insulate beds",
@@ -20,7 +20,7 @@ exports.seed = function(knex, Promise) {
           groupId: 1,
           description: "he tosses and strikes when he's dreaming",
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "rake the leaves",
@@ -28,7 +28,7 @@ exports.seed = function(knex, Promise) {
           groupId: 2,
           description: "keep it clean",
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "pick up leftover beers",
@@ -36,7 +36,7 @@ exports.seed = function(knex, Promise) {
           groupId: 2,
           description: "big party yesterday, they don't stay in control",
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "remove lightning-struck trees",
@@ -44,7 +44,7 @@ exports.seed = function(knex, Promise) {
           groupId: 2,
           description: "too many beers -_-",
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "refuel jet packs",
@@ -52,7 +52,7 @@ exports.seed = function(knex, Promise) {
           groupId: 3,
           description: "almost didn't make it last time",
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "grease gears on iron suit",
@@ -60,7 +60,7 @@ exports.seed = function(knex, Promise) {
           groupId: 3,
           description: "the suit is making funny noises when switching states",
           dueDate: "2100-05-05",
-          listId: 1
+         
         },
         {
           title: "prepare speech for Mr. America",
@@ -68,7 +68,7 @@ exports.seed = function(knex, Promise) {
           groupId: 4,
           description: 'this time, don\'t begin with "I have a dream" ',
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "polish shield",
@@ -76,7 +76,7 @@ exports.seed = function(knex, Promise) {
           groupId: 4,
           description: "gotta lookd good for the people",
           dueDate: "2100-05-05",
-          listId: 1
+          
         },
         {
           title: "iron Mr America's suit",
@@ -84,7 +84,7 @@ exports.seed = function(knex, Promise) {
           groupId: 4,
           description: "it's been in the suitcase for too long",
           dueDate: "2100-05-05",
-          listId: 1
+          
         }
       ]);
     });

@@ -80,7 +80,7 @@ router.post("/", (req, res) => {
   db.add(group)
     .then(g =>
       res.status(200).json({
-        groupId: g
+        group: g
       })
     )
     .catch(err => res.status(500).json(err.message));

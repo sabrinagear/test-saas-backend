@@ -86,7 +86,7 @@ router.post("/", async (req, res) => {
       userId: req.body.creatorId,
       isAdmin: true
     });
-    return res.status(200).json({
+    return res.status(201).json({
       groupId: gid,
       groups: arr,
       message: "Successfully Done"

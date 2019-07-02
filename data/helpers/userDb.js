@@ -45,10 +45,10 @@ module.exports = {
       .insert(user)
       .into("users");
   },
-  update: function(id, changes) {
+  update: function(uid, changes) {
     return db("users")
-      .returning("id")
-      .where({ id })
+      .returning("uid")
+      .where({ uid })
       .update(changes);
   },
   remove: function(id) {

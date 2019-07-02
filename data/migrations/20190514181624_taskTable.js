@@ -20,20 +20,13 @@ exports.up = function(knex, Promise) {
       table.boolean("isComplete").defaultTo(false);
       table.string("description");
       table.date("dueDate");
-
-      table
-        .biginteger("listId")
-        .unsigned()
-        .notNullable()
-        .references("id")
-        .inTable("lists")
-        .onDelete("CASCADE")
-        .index();
       table.timestamp("createdAt").defaultTo(knex.fn.now());
       table.timestamp("updatedAt").defaultTo(knex.fn.now());
     });
 };
-
 exports.down = function(knex, Promise) {
   return knex.schema.dropTableIfExists("tasks");
 };
+
+      
+

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const stripe = require("stripe")("sk_test_EO8zl6KiktFv1mygvxCLOeHX00iTGhjQZ4");
+const stripe = require("stripe")("sk_live_4P7cayaYk2xv1lIgahgt52TF00X6Au0quN");
 router.use(require("body-parser").text());
 
 router.post("/", async (req, res) => {
@@ -19,3 +19,4 @@ router.post("/", async (req, res) => {
   }
 });
 module.exports = router;
+

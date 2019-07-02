@@ -53,8 +53,8 @@ module.exports = {
   },
   remove: function(id) {
     return db("users")
-      .returning("id")
-      .where({ id })
+      .returning("uid")
+      .where({ uid })
       .del();
   }
 };

@@ -30,6 +30,13 @@ router.get("/:id", (req, res) => {
 router.post("/", async (req, res) => {
   let gm = req.body;
   try {
+    let check = await db.get();
+    for (let i = 0; i < check.length; i++) {
+      if (check[i].userId === gm.userId && check[i].groupId === gm.groupId) {
+        return res.status(422).json("user already exists");
+      }
+    }
+
     await db.add(gm);
     let arr = await db.get();
     return res.status(200).json({
@@ -46,11 +53,9 @@ router.put("/:id", async (req, res) => {
   try {
     let member = await db.get(id);
     if (!member) {
-      res
-        .status(404)
-        .json({
-          message: "The groupmember with the specified ID does not exist."
-        });
+      res.status(404).json({
+        message: "The groupmember with the specified ID does not exist."
+      });
     }
     await db.update(id, changes);
     let updatedArray = await db.get();

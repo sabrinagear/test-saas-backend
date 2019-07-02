@@ -51,7 +51,7 @@ module.exports = {
       .where({ uid })
       .update(changes);
   },
-  remove: function(id) {
+  remove: function(uid) {
     return db("users")
       .returning("uid")
       .where({ uid })

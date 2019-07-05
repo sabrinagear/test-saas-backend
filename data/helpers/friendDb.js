@@ -2,7 +2,7 @@ const db = require("../config");
 
 module.exports = {
   get: function(userId) {
-    let query = db("friends as f");
+    let query = db("friendTable as f");
     if (userId) {
       query.select("*").where("f.userId", userId);
     }

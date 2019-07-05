@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     await db.add(fs);
     let arr = await db.get();
     return res.status(200).json({
-      groupmembers: arr
+      friends: arr
     });
   } catch (err) {
     res.status(500).json(err.message);
@@ -69,7 +69,7 @@ router.delete("/:id", async (req, res) => {
     await db.remove(id);
     let updatedArray = await db.get();
     return res.status(200).json({
-      friendships: updatedArray,
+      friends: updatedArray,
       message: "successfully deleted"
     });
   } catch (err) {
@@ -92,7 +92,7 @@ router.put("/:id", async (req, res) => {
     await db.update(id, changes);
     let updatedArray = await db.get();
     return res.status(200).json({
-      friendships: updatedArray,
+      friends: updatedArray,
       message: "Successfully Updated"
     });
   } catch (err) {

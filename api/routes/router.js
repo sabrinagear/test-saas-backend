@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const userRoutes = require("./userRoutes");
+const friendRoutes = require("./friendRoutes");
 const groupRoutes = require("./groupRoutes");
 // const subscriptionRoutes = require("./subscriptionRoutes");
 const taskRoutes = require("./taskRoutes");
@@ -20,6 +21,7 @@ router.get("/", (req, res) => {
 });
 
 router.use("/users", userRoutes);
+router.use("/friends", friendRoutes);
 router.use("/group", groupRoutes);
 // router.use("/subscription", subscriptionRoutes);
 router.use("/tasks", taskRoutes);

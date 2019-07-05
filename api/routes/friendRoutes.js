@@ -5,13 +5,19 @@ const db = require("../../data/helpers/friendDb");
 // POST A friendship //
 
 router.post("/", async (req, res) => {
-  const friendship = req.body;
+  let fs = req.body;
   try {
-    await db.add(friendship);
-    let updatedArray = await db.get();
+    let check = await db.get();
+    for (let i = 0; i < check.length; i++) {
+      if (check[i].userId === fs.userId && check[i].friendId === fs.friendId) {
+        return res.status(422).json({ message: "already friends, silly!" });
+      }
+    }
+
+    await db.add(fs);
+    let arr = await db.get();
     return res.status(200).json({
-      friendships: updatedArray,
-      message: "Successfully Posted"
+      groupmembers: arr
     });
   } catch (err) {
     res.status(500).json(err.message);
@@ -38,11 +44,9 @@ router.get("/:id", (req, res) => {
       if (friendship) {
         res.status(200).json(friendship);
       } else {
-        res
-          .status(404)
-          .json({
-            message: "The friendship with the specified ID does not exist."
-          });
+        res.status(404).json({
+          message: "The friendship with the specified ID does not exist."
+        });
       }
     })
     .catch(err => {
@@ -58,11 +62,9 @@ router.delete("/:id", async (req, res) => {
   try {
     let friendship = await db.get(id);
     if (!friendship) {
-      res
-        .status(404)
-        .json({
-          message: "The friendship with the specified ID does not exist."
-        });
+      res.status(404).json({
+        message: "The friendship with the specified ID does not exist."
+      });
     }
     await db.remove(id);
     let updatedArray = await db.get();
@@ -83,11 +85,9 @@ router.put("/:id", async (req, res) => {
   try {
     let friendship = await db.get(id);
     if (!friendship) {
-      res
-        .status(404)
-        .json({
-          message: "The friendship with the specified ID does not exist."
-        });
+      res.status(404).json({
+        message: "The friendship with the specified ID does not exist."
+      });
     }
     await db.update(id, changes);
     let updatedArray = await db.get();
